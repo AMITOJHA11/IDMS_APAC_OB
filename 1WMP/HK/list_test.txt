@@ -1,0 +1,58 @@
+So many new libes are added here and checking it now 
+This world is not enough to work .
+
+
+
+kite.quote(exchange="NSE",tradingsymbol="IDEA")
+LTP1=kite.quote(exchange="NSE",tradingsymbol="IDEA")
+LTP=LTP1["last_price"]
+print ("Last Trading Price:",LTP)
+TRP=LTP-2
+print ("Trigger Price",TRP)
+kite.order_place(tradingsymbol="IDEA",product="CO",exchange="NSE",quantity=100,transaction_type="BUY",trigger_price=TRP,order_type="MARKET")
+
+orderao=kite.orders()
+
+for i in range(0,16):
+	time.sleep(1)
+	if orderao[i]["status"]=='TRIGGER PENDING':
+		if orderao[i]["transaction_type"]=='SELL':
+       				if orderao[i]["tradingsymbol"]=='IDEA':
+       					APBI=orderao[i-1]["average_price"]
+       					APBPP = orderao[i]["parent_order_id"]
+       					APBP = orderao[i]["order_id"]
+       					print ("Average buy price IDEA:", APBI)
+       					print ("Parent Order id:",APBPP)
+       				if orderao[i]["tradingsymbol"]=='SUZLON':
+       					APBS=orderao[i]["average_price"]
+       					print ("Average buy price Suzlon",APBS)
+       				if orderao[i]["tradingsymbol"]=='JKTYRE':
+       					APBJ=orderao[i]["average_price"]
+       					print ("Average buy price JKTYRE",APBJ)
+		else:
+				if orderao[i]["tradingsymbol"]=='HINDALCO':
+       					APSH=orderao[i]["average_price"]
+       					print ("Average sell price Hindalco:", APBH)
+				if orderao[i]["tradingsymbol"]=='SUZLON':
+       					APSS=orderao[i]["average_price"]
+       					print ("Average sell price Suzlon",APSS)
+				if orderao[i]["tradingsymbol"]=='JKTYRE':
+       					APSJ=orderao[i]["average_price"]
+       					print ("Average buy price JKTYRE",APSJ)
+       					
+
+exit_BI=1
+while(exit_BI):
+	time.sleep(10)
+	LTPI1=kite.quote(exchange="NSE",tradingsymbol="IDEA")
+	LTPI=LTPI1["last_price"]
+	print ("Last trading price IDEA:",LTPI)
+	if exit_BI==1:
+		if LTPI > APBI :
+			if abs(LTPI - APBI) > .6:
+				kite.order_cancel(parent_order_id=APBPP,order_id=APBP,variety="co")
+				exit_BH=0
+		else :
+			if abs(LTPI - APBI) > .4:
+				kite.order_cancel(parent_order_id=APBPP,order_id=APBP,variety="co")
+				exit_BH=0
