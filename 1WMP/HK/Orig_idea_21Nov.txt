@@ -1,3 +1,8 @@
+So many new libes are added here and checking it now 
+This world is not enough to work .
+
+
+
 kite.quote(exchange="NSE",tradingsymbol="IDEA")
 LTP1=kite.quote(exchange="NSE",tradingsymbol="IDEA")
 LTP=LTP1["last_price"]
